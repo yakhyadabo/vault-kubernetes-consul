@@ -17,10 +17,6 @@ spec:
         image: "vault:1.2.3"
         imagePullPolicy: IfNotPresent
         env: 
-          - name: POD_IP
-            valueFrom:
-              fieldRef:
-                fieldPath: status.podIP
           - name: VAULT_API_ADDR
             value: "http://0.0.0.0:8200"
           - name: SKIP_SETCAP
@@ -38,6 +34,10 @@ spec:
       - name: consul-vault-agent
         image: "consul:1.6.1"
         env:
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
           - name: CONSUL_DISABLE_PERM_MGMT 
             value:
           - name: GOSSIP_ENCRYPTION_KEY
