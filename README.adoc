@@ -1,0 +1,34 @@
+Requirements : 
+
+Download Consul : https://www.consul.io/downloads.html
+
+
+1. apt get install openssl golang-cfssl
+
+
+2. Create a Certificate Authority:
+cfssl gencert -initca certs/config/ca-csr.json | cfssljson -bare certs/ca
+
+
+3. Create a private key and a TLS certificate for Consul
+[source,shell]
+----
+cfssl gencert \
+    -ca=certs/ca.pem \
+    -ca-key=certs/ca-key.pem \
+    -config=certs/config/ca-config.json \
+    -profile=default \
+    certs/config/consul-csr.json | cfssljson -bare certs/consul
+----
+
+4. Create a private key and a TLS certificate for Vault
+
+[source,shell]
+----
+cfssl gencert \
+    -ca=certs/ca.pem \
+    -ca-key=certs/ca-key.pem \
+    -config=certs/config/ca-config.json \
+    -profile=default \
+    certs/config/vault-csr.json | cfssljson -bare certs/vault
+----
