@@ -1,10 +1,26 @@
+== Deploying Vault in Openshift using Consul as a backend
+
+Forked from : https://testdriven.io/blog/running-vault-and-consul-on-kubernetes/
+
 Requirements : 
+ - oc client
+ - vault
+ - cfssl
+ - consul client 1.6.1
 
-Download Consul : https://www.consul.io/downloads.html
+1.a. Download and install consul 1.6.1
+[source,shell]
+----
+curl -LO https://releases.hashicorp.com/consul/1.6.1/consul_1.6.1_linux_amd64.zip
+unzip consul_1.6.1_linux_amd64.zip
+sudo mv consul /usr/local/bin/
+----
 
+1.b. Install cfssl
 
-1. apt get install openssl golang-cfssl
-
+----
+apt get install openssl golang-cfssl
+----
 
 2. Create a Certificate Authority:
 cfssl gencert -initca certs/config/ca-csr.json | cfssljson -bare certs/ca
