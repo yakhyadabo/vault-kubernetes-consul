@@ -2,7 +2,8 @@
 
 Forked from : https://testdriven.io/blog/running-vault-and-consul-on-kubernetes/
 
-Requirements : 
+== Requirements : 
+
  - oc client
  - vault
  - cfssl
@@ -18,13 +19,16 @@ sudo mv consul /usr/local/bin/
 
 1.b. Install cfssl
 
+[source,shell]
 ----
 apt get install openssl golang-cfssl
 ----
 
 2. Create a Certificate Authority:
+[source,shell]
+----
 cfssl gencert -initca certs/config/ca-csr.json | cfssljson -bare certs/ca
-
+----
 
 3. Create a private key and a TLS certificate for Consul
 [source,shell]
