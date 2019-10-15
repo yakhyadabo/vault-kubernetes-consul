@@ -88,5 +88,14 @@ spec:
         - name: tls
           secret:
             secretName: consul
-        - name: consul-data
-          emptyDir: {}
+       # - name: consul-data
+       #   emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: consul-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
