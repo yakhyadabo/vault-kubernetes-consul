@@ -1,11 +1,15 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
   name: vault
   labels:
     app: vault
 spec:
-  replicas: 3
+  serviceName: "vault"
+  selector:
+    matchLabels:
+      app: vault
+  replicas: 1
   template:
     metadata:
       labels:
@@ -34,10 +38,10 @@ spec:
       - name: consul-vault-agent
         image: "consul:1.6.1"
         env:
-          - name: POD_IP
+          - name: POD_NAME
             valueFrom:
               fieldRef:
-                fieldPath: status.podIP
+                fieldPath: metadata.name
           - name: CONSUL_DISABLE_PERM_MGMT 
             value:
           - name: GOSSIP_ENCRYPTION_KEY
@@ -58,10 +62,10 @@ spec:
           - "-domain=cluster.local"
           - "-datacenter=dc1"
           - "-disable-host-node-id"
-          - "-node=$(POD_IP)"
+          - "-node=$(POD_NAME)"
         volumeMounts:
-            - name: config
-              mountPath: /consul/myconfig
+  #          - name: config
+  #            mountPath: /consul/myconfig
             - name: tls
               mountPath: /etc/tls
             - name: consul-data
