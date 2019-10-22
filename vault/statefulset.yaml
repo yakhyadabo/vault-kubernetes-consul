@@ -35,6 +35,22 @@ spec:
             subPath: config.json
           - name: vault
             mountPath: /etc/tls
+        readinessProbe:
+          httpGet:
+            path: "/v1/sys/health?standbyok=true"
+            port: 8200
+            scheme: HTTPS
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: "/v1/sys/health?standbyok=true"
+            port: 8200
+            scheme: HTTPS
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 1
       - name: consul-vault-agent
         image: "consul:1.6.1"
         env:
