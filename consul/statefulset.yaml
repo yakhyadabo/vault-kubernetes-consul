@@ -1,8 +1,11 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: consul
 spec:
+  selector:
+    matchLabels:
+     app: consul
   serviceName: consul
   replicas: 3
   template:
@@ -88,14 +91,14 @@ spec:
         - name: tls
           secret:
             secretName: consul
-       # - name: consul-data
-       #   emptyDir: {}
-  volumeClaimTemplates:
-    - metadata:
-        name: consul-data
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 5Gi
+        - name: consul-data
+          emptyDir: {}
+#  volumeClaimTemplates:
+#    - metadata:
+#        name: consul-data
+#      spec:
+#        accessModes:
+#          - ReadWriteOnce
+#        resources:
+#          requests:
+#            storage: 5Gi
