@@ -1,5 +1,4 @@
-== Deploying Vault in Openshift using Consul as a backend
-
+== Deploying Vault in Openshift using Consul as a backend 
 Forked from : 
 
  - https://github.com/kelseyhightower/vault-init
@@ -55,4 +54,28 @@ cfssl gencert \
     -config=certs/config/ca-config.json \
     -profile=default \
     certs/config/vault-csr.json | cfssljson -bare certs/vault
+----
+
+[source,shell]
+----
+kubectl create secret generic consul \
+  --from-literal="gossip-encryption-key=$(consul keygen)" \
+  --from-file=certs/ca.pem \
+  --from-file=certs/consul.pem \
+  --from-file=certs/consul-key.pem
+----
+
+[source,shell]
+----
+kubectl create configmap consul --from-file=consul/config.json
+----
+
+[source,shell]
+----
+kubectl create -f consul/service.yaml
+----
+
+[source,shell]
+----
+kubectl create -f consul/statefulset.yaml
 ----
